@@ -1,0 +1,23 @@
+{
+    "name": "tristanbettany/rss_reader",
+    "description": "An RSS reader in vanilla PHP",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tristan Bettany",
+            "email": "hi@tristanbettany.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "RSSReader\\Application\\": "src/Application",
+            "RSSReader\\ApplicationInterface\\": "src/ApplicationInterface",
+            "RSSReader\\Database\\": "src/Database",
+            "RSSReader\\Presentation\\": "src/Presentation"
+        }
+    }
+}
