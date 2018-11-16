@@ -50,5 +50,6 @@ final class App
         $this->router = new Router($this->request);
 
         $this->router->setupRoutes($this->routes);
+        $this->router->dispatch();
     }
 }

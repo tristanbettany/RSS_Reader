@@ -2,6 +2,8 @@
 
 namespace RSSReader\ApplicationInterface;
 
+use RSSReader\ApplicationInterface\Exceptions\HttpNotFoundException;
+
 /**
  * Router Class
  */
@@ -56,7 +58,7 @@ final class Router
     /**
      * Dispatch to route
      */
-    private function dispatch()
+    public function dispatch()
     {
         $method = strtolower($this->request->getRequestMethod());
         $path = $this->request->getRequestUri();
@@ -71,15 +73,7 @@ final class Router
                 [$this->request]
             );
         } else {
-            throw new \Exception('404 Not Found', 404);
+            throw new HttpNotFoundException();
         }
-    }
-
-    /**
-     * Dispatch on destruct
-     */
-    public function __destruct()
-    {
-        $this->dispatch();
     }
 }
