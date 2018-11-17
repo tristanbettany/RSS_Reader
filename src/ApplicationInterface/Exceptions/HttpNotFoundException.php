@@ -2,8 +2,6 @@
 
 namespace RSSReader\ApplicationInterface\Exceptions;
 
-use Throwable;
-
 /**
  * 404 Not found exception
  */

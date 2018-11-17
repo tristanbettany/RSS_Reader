@@ -2,6 +2,8 @@
 
 namespace RSSReader\ApplicationInterface\Actions;
 
+use RSSReader\Application\Helpers\Assert;
+use RSSReader\ApplicationInterface\Exceptions\ValidationException;
 use RSSReader\ApplicationInterface\RequestInterface;
 use RSSReader\ApplicationInterface\Response;
 use RSSReader\ApplicationInterface\ResponseInterface;
@@ -37,30 +39,28 @@ final class FeedsAction
     /**
      * @param RequestInterface $request
      *
+     * @throws ValidationException
+     *
      * @return ResponseInterface
      */
     public function post(RequestInterface $request) :ResponseInterface
     {
-        var_dump($request->getPostVars()); die;
-    }
+        $postVars = $request->getPostVars();
 
-    /**
-     * @param RequestInterface $request
-     *
-     * @return ResponseInterface
-     */
-    public function put(RequestInterface $request) :ResponseInterface
-    {
-        var_dump($request->getPutVars()); die;
-    }
+        if (empty($postVars) === false) {
+            Assert::payload($postVars, [
+                'name' => 'required',
+                'url'  => 'required',
+            ]);
 
-    /**
-     * @param RequestInterface $request
-     *
-     * @return ResponseInterface
-     */
-    public function delete(RequestInterface $request) :ResponseInterface
-    {
-        var_dump('delete'); die;
+            $this->feedService->addFeed(
+                $postVars['name'],
+                $postVars['url']
+            );
+        }
+
+        return new Response(
+            ['message' => 'Record Added']
+        );
     }
 }
