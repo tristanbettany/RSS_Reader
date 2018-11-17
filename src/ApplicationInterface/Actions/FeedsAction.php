@@ -5,12 +5,21 @@ namespace RSSReader\ApplicationInterface\Actions;
 use RSSReader\ApplicationInterface\RequestInterface;
 use RSSReader\ApplicationInterface\Response;
 use RSSReader\ApplicationInterface\ResponseInterface;
+use RSSReader\Domain\Services\FeedService;
 
 /**
- * Home Action
+ * Feeds Action
  */
-final class HomeAction
+final class FeedsAction
 {
+    /** @var FeedService */
+    private $feedService;
+
+    public function __construct()
+    {
+        $this->feedService = new FeedService();
+    }
+
     /**
      * @param RequestInterface $request
      *
@@ -18,11 +27,10 @@ final class HomeAction
      */
     public function get(RequestInterface $request) :ResponseInterface
     {
+        $feeds = $this->feedService->findAllFeeds();
+
         return new Response(
-            ['test' => 'im a test'],
-            200,
-            'index',
-            'HTML'
+            $feeds
         );
     }
 }

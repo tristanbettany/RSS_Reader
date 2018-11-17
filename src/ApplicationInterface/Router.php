@@ -3,6 +3,7 @@
 namespace RSSReader\ApplicationInterface;
 
 use RSSReader\ApplicationInterface\Exceptions\HttpNotFoundException;
+use RSSReader\Presentation\Template;
 
 /**
  * Router Class
@@ -67,13 +68,15 @@ final class Router
 
         if (empty($this->routes[$method][$path]) === false) {
             $class = new $this->routes[$method][$path];
-            call_user_func_array(
+            $response = call_user_func_array(
                 [
                     $class,
                     $method,
                 ],
                 [$this->request]
             );
+
+            Template::render($response);
         } else {
             throw new HttpNotFoundException();
         }

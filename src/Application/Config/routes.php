@@ -2,8 +2,13 @@
 
 return [
     'home' => [
-        'methods' => ['GET', 'POST'],
+        'methods' => ['GET'],
         'path'    => '/',
         'action'  => '\\RSSReader\\ApplicationInterface\\Actions\\HomeAction',
+    ],
+    'feeds' => [
+        'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
+        'path'    => '/feeds',
+        'action'  => '\\RSSReader\\ApplicationInterface\\Actions\\FeedsAction',
     ],
 ];
