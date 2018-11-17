@@ -2,6 +2,8 @@
 
 namespace RSSReader\Application\Commands;
 
+use RSSReader\Application\Command;
+use RSSReader\Application\CommandInterface;
 use RSSReader\Application\Helpers\Config;
 
 /**
@@ -12,7 +14,7 @@ final class MigrateCommand extends Command implements CommandInterface
     /** @var string */
     public $name = 'migrate';
     /** @var string */
-    public $description = 'Migration Command';
+    public $description = '{all|migration_name} Migration Command';
 
     /** @var array */
     private $migrations = [];

@@ -1,6 +1,6 @@
 <?php
 
-namespace RSSReader\Application\Commands;
+namespace RSSReader\Application;
 
 /**
  * Command Interface
