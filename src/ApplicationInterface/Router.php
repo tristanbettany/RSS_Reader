@@ -57,6 +57,8 @@ final class Router
 
     /**
      * Dispatch to route
+     *
+     * @throws HttpNotFoundException
      */
     public function dispatch()
     {

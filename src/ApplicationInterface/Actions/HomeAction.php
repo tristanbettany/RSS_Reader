@@ -9,6 +9,9 @@ use RSSReader\ApplicationInterface\RequestInterface;
  */
 final class HomeAction
 {
+    /**
+     * @param RequestInterface $request
+     */
     public function get(RequestInterface $request)
     {
         die('homeaction');
