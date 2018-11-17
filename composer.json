@@ -19,6 +19,7 @@
             "RSSReader\\Application\\": "src/Application",
             "RSSReader\\ApplicationInterface\\": "src/ApplicationInterface",
             "RSSReader\\Database\\": "src/Database",
+            "RSSReader\\Domain\\": "src/Domain",
             "RSSReader\\Presentation\\": "src/Presentation"
         }
     }
