@@ -60,8 +60,8 @@ final class Cli
                 foreach($commandObjects as $command) {
                     if ($command->name === $this->arguments[1]) {
                         $arguments = $this->arguments;
-                        unset($arguments[0]);
-                        unset($arguments[1]);
+                        array_shift($arguments);
+                        array_shift($arguments);
                         $command->exec($arguments);
                     }
                 }

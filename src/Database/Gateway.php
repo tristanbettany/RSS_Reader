@@ -62,6 +62,22 @@ class Gateway
     }
 
     /**
+     * @param string $query
+     * @param array $bindings
+     *
+     * @return void
+     */
+    public function execute(
+        string $query,
+        array  $bindings = []
+    ) {
+        $this->prepareQuery(
+            $query,
+            $bindings
+        );
+    }
+
+    /**
      * Prepare the query
      *
      * @param string $query
