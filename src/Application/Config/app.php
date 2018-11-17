@@ -5,4 +5,7 @@ return [
     'commands' => [
         \RSSReader\Application\Commands\MigrateCommand::class
     ],
+    'migrations' => [
+        \RSSReader\Database\Migrations\FeedsTable::class
+    ],
 ];
