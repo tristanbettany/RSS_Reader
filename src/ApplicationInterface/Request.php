@@ -60,6 +60,7 @@ final class Request implements RequestInterface
      */
     private function buildRequest()
     {
+        //Server Vars
         foreach($_SERVER as $key => $value)
         {
             $attr = null;
@@ -75,6 +76,30 @@ final class Request implements RequestInterface
             if (empty($attr) === false) {
                 $this->attributes[$attr] = $value;
             }
+        }
+
+        $urlComponents = parse_url($this->attributes['requestUri']);
+        $this->attributes['uriPath'] = $urlComponents['path'];
+
+        //Query Vars
+        if (empty($urlComponents['query']) === false) {
+            parse_str($urlComponents['query'], $queryVars);
+            $this->attributes['uriQueryVars'] = $queryVars;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //Post Vars
+            $this->attributes['postVars'] = $_POST;
+        } else {
+            $this->attributes['postVars'] = [];
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+            //Put Vars
+            parse_str(file_get_contents("php://input"), $putVars);
+            $this->attributes['putVars'] = $putVars;
+        } else {
+            $this->attributes['putVars'] = [];
         }
     }
 }

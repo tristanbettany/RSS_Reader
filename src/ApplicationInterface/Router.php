@@ -64,7 +64,7 @@ final class Router
     public function dispatch()
     {
         $method = strtolower($this->request->getRequestMethod());
-        $path = $this->request->getRequestUri();
+        $path = $this->request->getUriPath();
 
         if (empty($this->routes[$method][$path]) === false) {
             $class = new $this->routes[$method][$path];

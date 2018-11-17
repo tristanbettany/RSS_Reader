@@ -33,4 +33,34 @@ final class FeedsAction
             $feeds
         );
     }
+
+    /**
+     * @param RequestInterface $request
+     *
+     * @return ResponseInterface
+     */
+    public function post(RequestInterface $request) :ResponseInterface
+    {
+        var_dump($request->getPostVars()); die;
+    }
+
+    /**
+     * @param RequestInterface $request
+     *
+     * @return ResponseInterface
+     */
+    public function put(RequestInterface $request) :ResponseInterface
+    {
+        var_dump($request->getPutVars()); die;
+    }
+
+    /**
+     * @param RequestInterface $request
+     *
+     * @return ResponseInterface
+     */
+    public function delete(RequestInterface $request) :ResponseInterface
+    {
+        var_dump('delete'); die;
+    }
 }
