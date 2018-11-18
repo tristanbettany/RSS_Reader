@@ -3,6 +3,7 @@
 namespace RSSReader\Domain\Services;
 
 use RSSReader\Database\Gateways\FeedGateway;
+use RSSReader\Domain\Factories\RSS;
 
 /**
  * Feed Service class
@@ -91,5 +92,19 @@ final class FeedService
     public function softDeleteFeed(int $feedID)
     {
         $this->feedGateway->softDeleteFeed($feedID);
+    }
+
+    /**
+     * Get the content of a feed
+     *
+     * @param int $feedID
+     *
+     * @return array
+     */
+    public function getFeedContent(int $feedID) :array
+    {
+        $feed = $this->findFeedByID($feedID);
+
+        return RSS::forge($feed['url'])->parseFeed();
     }
 }

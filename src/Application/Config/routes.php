@@ -16,4 +16,9 @@ return [
         'path'    => '/feed',
         'action'  => '\\RSSReader\\ApplicationInterface\\Actions\\FeedAction',
     ],
+    'feed_content' => [
+        'methods' => ['GET'],
+        'path'    => '/feed/content',
+        'action'  => '\\RSSReader\\ApplicationInterface\\Actions\\FeedContentAction',
+    ],
 ];

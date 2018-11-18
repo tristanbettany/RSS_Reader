@@ -3,6 +3,7 @@
 namespace RSSReader\Application;
 
 use RSSReader\Application\Helpers\Config;
+use RSSReader\ApplicationInterface\ExceptionHandler;
 use RSSReader\ApplicationInterface\Request;
 use RSSReader\ApplicationInterface\Router;
 
@@ -27,6 +28,10 @@ final class App
      */
     public function __construct(array $config)
     {
+        // Turn Warnings into exceptions
+        // Warnings are annoying as they are un-catchable
+        set_error_handler(ExceptionHandler::class . '::handle', E_WARNING);
+
         $this->config = $config;
         $this->setConfig();
         $this->boot();
