@@ -69,9 +69,45 @@
                 </div>
 
                 <div v-if="feedContent" class="feedContent">
-                    <br><hr><br>
+                    <br><hr>
 
+                    <div class="columns is-mobile">
+                        <div class="column is-4 contentToColumnBottom">
+                            <figure class="image">
+                                <img :src="feedContent.details.image" />
+                            </figure>
+                        </div>
+                        <div class="column is-4 contentToColumnBottom">
+                            <p><strong>{{ currentFeed.name }}</strong></p>
+                            <p>{{ feedContent.details.description }}</p>
+                        </div>
+                        <div class="column is-4 contentToColumnBottom">
+                            <button class="button save-button is-pulled-right" @click="getFeedContent()">Refresh Feed</button>
+                        </div>
+                    </div>
 
+                    <hr><br>
+
+                    <div class="post" v-for="post in feedContent.posts">
+                        <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">{{ post.title }}</p>
+                            </header>
+                            <div class="card-content">
+                                <div class="imageContainer" v-if="post.thumbnail">
+                                    <figure class="image">
+                                        <img :src="post.thumbnail" />
+                                    </figure>
+                                    <br>
+                                </div>
+                                <div v-html="post.description" class="content">{{ post.description }}</div>
+                            </div>
+                            <footer class="card-footer">
+                                <a target="_blank" :href="post.link" class="card-footer-item">View on publishers website</a>
+                            </footer>
+                        </div>
+                        <br>
+                    </div>
 
                     <br><hr><br>
                 </div>
@@ -151,6 +187,7 @@
                 this.feeds.forEach((feed) => {
                     if (feed.id == this.selectedFeedID) {
                         this.currentFeed = feed
+                        this.getFeedContent()
                     }
                 })
             },
@@ -182,7 +219,16 @@
             deleteFeed() {
                 this.$http.delete('/feed?id='+this.currentFeed.id).then((response) => {
                     this.currentFeed = null
+                    this.feedContent = null
                     this.getFeeds()
+                }, error => {
+                    console.log(error)
+                })
+            },
+            getFeedContent() {
+                this.feedContent = null
+                this.$http.get('/feed/content?id='+this.currentFeed.id).then((response) => {
+                    this.feedContent = response.body
                 }, error => {
                     console.log(error)
                 })
@@ -241,6 +287,9 @@
     }
     .deleteButton{
         width: 25% !important;
+    }
+    .contentToColumnBottom{
+        margin-top: auto;
     }
 </style>
 </body>

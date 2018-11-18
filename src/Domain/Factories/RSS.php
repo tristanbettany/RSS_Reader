@@ -61,12 +61,18 @@ final class RSS
         }
 
         foreach ($items as $item) {
-            $date = new \DateTimeImmutable((string) $item->pubDate);
+            if (empty($item->pubDate) === true) {
+                $date = null;
+                $displayDate = null;
+            } else {
+                $date = new \DateTimeImmutable((string) $item->pubDate);
+                $displayDate = $date->format('Y-m-d H:i:s');
+            }
 
             try{
                 $thumbnail = (string) $item->children('media', true)->thumbnail->attributes()->url;
             } catch (\ErrorException $e) {
-                $thumbnail = null;
+                $thumbnail = '/assets/missing-image.png';
             }
 
             $this->posts[] = [
@@ -74,18 +80,26 @@ final class RSS
                 'description' => (string) $item->description,
                 'link' => (string) $item->link,
                 'date' => $date,
-                'display_date' => $date->format('Y-m-d H:i:s'),
+                'display_date' => $displayDate,
                 'thumbnail' => $thumbnail,
             ];
         }
 
-        $this->sortPosts();
+        if ($date !== null) {
+            $this->sortPosts();
+        }
+
+        if (empty($this->xml->channel->image->url) === true) {
+            $image = '/assets/missing-image.png';
+        } else {
+            $image = (string) $this->xml->channel->image->url;
+        }
 
         return [
             'details' => [
                 'title' => (string) $this->xml->channel->title,
                 'description' => (string) $this->xml->channel->description,
-                'image' => (string) $this->xml->channel->image->url,
+                'image' => $image,
                 'website' => (string) $this->xml->channel->link,
             ],
             'posts' => $this->posts,
