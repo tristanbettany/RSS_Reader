@@ -45,22 +45,29 @@ final class FeedsAction
      */
     public function post(RequestInterface $request) :ResponseInterface
     {
-        $postVars = $request->getPostVars();
+        try {
+            $postVars = $request->getPostVars();
 
-        if (empty($postVars) === false) {
-            Assert::payload($postVars, [
-                'name' => 'required',
-                'url'  => 'required',
-            ]);
+            if (empty($postVars) === false) {
+                Assert::payload($postVars, [
+                    'name' => 'required',
+                    'url'  => 'required|url',
+                ]);
 
-            $this->feedService->addFeed(
-                $postVars['name'],
-                $postVars['url']
+                $this->feedService->addFeed(
+                    $postVars['name'],
+                    $postVars['url']
+                );
+            }
+
+            return new Response(
+                ['message' => 'Record Added']
+            );
+        } catch(ValidationException $e) {
+            return new Response(
+                ['message' => $e->getMessage()],
+                $e->getCode()
             );
         }
-
-        return new Response(
-            ['message' => 'Record Added']
-        );
     }
 }

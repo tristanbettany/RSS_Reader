@@ -31,22 +31,29 @@ final class FeedAction
      */
     public function get(RequestInterface $request) :ResponseInterface
     {
-        $queryVars = $request->getUriQueryVars();
+        try {
+            $queryVars = $request->getUriQueryVars();
 
-        $feed = [];
-        if (empty($queryVars) === false) {
-            Assert::payload($queryVars, [
-                'id' => 'required',
-            ]);
+            $feed = [];
+            if (empty($queryVars) === false) {
+                Assert::payload($queryVars, [
+                    'id' => 'required',
+                ]);
 
-            $feed = $this->feedService->findFeedByID(
-                (int) $queryVars['id']
+                $feed = $this->feedService->findFeedByID(
+                    (int) $queryVars['id']
+                );
+            }
+
+            return new Response(
+                $feed
+            );
+        } catch(ValidationException $e) {
+            return new Response(
+                ['message' => $e->getMessage()],
+                $e->getCode()
             );
         }
-
-        return new Response(
-            $feed
-        );
     }
 
     /**
@@ -58,29 +65,36 @@ final class FeedAction
      */
     public function put(RequestInterface $request) :ResponseInterface
     {
-        $putVars = $request->getPutVars();
-        $queryVars = $request->getUriQueryVars();
+        try {
+            $putVars = $request->getPutVars();
+            $queryVars = $request->getUriQueryVars();
 
-        if (empty($putVars) === false && empty($queryVars) === false) {
-            Assert::payload($queryVars, [
-                'id' => 'required',
-            ]);
+            if (empty($putVars) === false && empty($queryVars) === false) {
+                Assert::payload($queryVars, [
+                    'id' => 'required',
+                ]);
 
-            Assert::payload($putVars, [
-                'name' => 'required',
-                'url'  => 'required',
-            ]);
+                Assert::payload($putVars, [
+                    'name' => 'required',
+                    'url'  => 'required|url',
+                ]);
 
-            $this->feedService->updateFeed(
-                $putVars['name'],
-                $putVars['url'],
-                (int) $queryVars['id']
+                $this->feedService->updateFeed(
+                    $putVars['name'],
+                    $putVars['url'],
+                    (int) $queryVars['id']
+                );
+            }
+
+            return new Response(
+                ['message' => 'Record Updated']
+            );
+        } catch(ValidationException $e) {
+            return new Response(
+                ['message' => $e->getMessage()],
+                $e->getCode()
             );
         }
-
-        return new Response(
-            ['message' => 'Record Updated']
-        );
     }
 
     /**
@@ -92,20 +106,27 @@ final class FeedAction
      */
     public function delete(RequestInterface $request) :ResponseInterface
     {
-        $queryVars = $request->getUriQueryVars();
+        try {
+            $queryVars = $request->getUriQueryVars();
 
-        if (empty($queryVars) === false) {
-            Assert::payload($queryVars, [
-                'id' => 'required',
-            ]);
+            if (empty($queryVars) === false) {
+                Assert::payload($queryVars, [
+                    'id' => 'required',
+                ]);
 
-            $this->feedService->softDeleteFeed(
-                (int) $queryVars['id']
+                $this->feedService->softDeleteFeed(
+                    (int) $queryVars['id']
+                );
+            }
+
+            return new Response(
+                ['message' => 'Record Soft Deleted']
+            );
+        } catch(ValidationException $e) {
+            return new Response(
+                ['message' => $e->getMessage()],
+                $e->getCode()
             );
         }
-
-        return new Response(
-            ['message' => 'Record Soft Deleted']
-        );
     }
 }

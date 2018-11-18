@@ -94,7 +94,7 @@
                                 <p class="card-header-title">{{ post.title }}</p>
                             </header>
                             <div class="card-content">
-                                <div class="imageContainer" v-if="post.thumbnail">
+                                <div class="imageContainer" v-if="post.thumbnail != '/assets/missing-image.png'">
                                     <figure class="image">
                                         <img :src="post.thumbnail" />
                                     </figure>
@@ -157,6 +157,10 @@
 
     <div class="status-bar notification has-text-centered">
         <p v-if="currentFeed">Currently Viewing : {{ currentFeed.name }}</p>
+        <div v-if="isError">
+            <div v-if="currentFeed"><br></div>
+            <p class="has-text-danger">Error: {{ error.status }} - {{ error.body.message }}</p>
+        </div>
     </div>
 </div>
 
@@ -173,14 +177,25 @@
             selectedFeedID: null,
             currentFeed: null,
             isModalActive: false,
-            feedContent: null
+            feedContent: null,
+            isError: false,
+            error: null
         },
         methods: {
+            clearError() {
+                this.isError = false
+                this.error = null
+            },
+            setError(error) {
+                this.isError = true
+                this.error = error
+            },
             getFeeds() {
+                this.clearError()
                 this.$http.get('/feeds').then((response) => {
                     this.feeds = response.body
                 }, error => {
-                    console.log(error)
+                    this.setError(error)
                 })
             },
             changeFeed() {
@@ -192,6 +207,7 @@
                 })
             },
             addFeed() {
+                this.clearError()
                 let data = {
                     name: this.newFeedName,
                     url: this.newFeedURL
@@ -201,10 +217,13 @@
                     this.newFeedURL = ''
                     this.getFeeds()
                 }, error => {
-                    console.log(error)
+                    this.newFeedName = ''
+                    this.newFeedURL = ''
+                    this.setError(error)
                 })
             },
             editFeed() {
+                this.clearError()
                 let data = {
                     name: this.currentFeed.name,
                     url: this.currentFeed.url
@@ -213,24 +232,27 @@
                     this.getFeeds()
                     this.isModalActive = false
                 }, error => {
-                    console.log(error)
+                    this.isModalActive = false
+                    this.setError(error)
                 })
             },
             deleteFeed() {
+                this.clearError()
                 this.$http.delete('/feed?id='+this.currentFeed.id).then((response) => {
                     this.currentFeed = null
                     this.feedContent = null
                     this.getFeeds()
                 }, error => {
-                    console.log(error)
+                    this.setError(error)
                 })
             },
             getFeedContent() {
+                this.clearError()
                 this.feedContent = null
                 this.$http.get('/feed/content?id='+this.currentFeed.id).then((response) => {
                     this.feedContent = response.body
                 }, error => {
-                    console.log(error)
+                    this.setError(error)
                 })
             }
         },

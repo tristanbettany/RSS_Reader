@@ -31,21 +31,28 @@ final class FeedContentAction
      */
     public function get(RequestInterface $request) :ResponseInterface
     {
-        $queryVars = $request->getUriQueryVars();
+        try {
+            $queryVars = $request->getUriQueryVars();
 
-        $feedContent = [];
-        if (empty($queryVars) === false) {
-            Assert::payload($queryVars, [
-                'id' => 'required',
-            ]);
+            $feedContent = [];
+            if (empty($queryVars) === false) {
+                Assert::payload($queryVars, [
+                    'id' => 'required',
+                ]);
 
-            $feedContent = $this->feedService->getFeedContent(
-                (int) $queryVars['id']
+                $feedContent = $this->feedService->getFeedContent(
+                    (int) $queryVars['id']
+                );
+            }
+
+            return new Response(
+                $feedContent
+            );
+        } catch(ValidationException $e) {
+            return new Response(
+                ['message' => $e->getMessage()],
+                $e->getCode()
             );
         }
-
-        return new Response(
-            $feedContent
-        );
     }
 }

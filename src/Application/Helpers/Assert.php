@@ -55,4 +55,17 @@ final class Assert
             throw new ValidationException('"' . $val . '" does not meet the requirements for an email address');
         }
     }
+
+    /**
+     * @param      $val
+     * @param null $param
+     *
+     * @throws ValidationException
+     */
+    private static function url($val, $param = null)
+    {
+        if (filter_var($val, FILTER_VALIDATE_URL) === false) {
+            throw new ValidationException('"' . $val . '" does not meet the requirements for a valid url');
+        }
+    }
 }
