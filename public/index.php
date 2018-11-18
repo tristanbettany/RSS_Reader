@@ -25,5 +25,7 @@ try {
     PDOException
     $e
 ) {
+    //TODO: Given more time improve error handling with better custom error pages
+
     echo $e->getMessage();
 }
