@@ -2,7 +2,7 @@
     "name": "tristanbettany/rss_reader",
     "description": "An RSS reader in vanilla PHP",
     "type": "project",
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Tristan Bettany",
