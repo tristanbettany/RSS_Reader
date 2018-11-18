@@ -68,9 +68,14 @@
                     </form>
                 </div>
 
-                <br>
-                <hr>
-                <br>
+                <div v-if="feedContent" class="feedContent">
+                    <br><hr><br>
+
+
+
+                    <br><hr><br>
+                </div>
+
             </div>
         </div>
     </div>
@@ -131,7 +136,8 @@
             feeds: [],
             selectedFeedID: null,
             currentFeed: null,
-            isModalActive: false
+            isModalActive: false,
+            feedContent: null
         },
         methods: {
             getFeeds() {
@@ -175,6 +181,7 @@
             },
             deleteFeed() {
                 this.$http.delete('/feed?id='+this.currentFeed.id).then((response) => {
+                    this.currentFeed = null
                     this.getFeeds()
                 }, error => {
                     console.log(error)
