@@ -122,3 +122,9 @@ do such a thing would require generation and validation of JWT's which would exc
 With more time I would also improve the error handling providing better HTTP error pages like custom 404's
 I would also look into seting up a debug mode so exceptions and stack traces could be presented better while
 in development mode.
+
+I would also use extra time to enable auto refreshing of the feed on the frontend based on 
+ttl's given in the rss feed. 
+
+If the project was expanded to include a user account system I would recommend setting 
+up certbot to enable HTTPS on the vhost.
