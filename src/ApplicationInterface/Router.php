@@ -67,7 +67,8 @@ final class Router
         $path = $this->request->getUriPath();
 
         if (empty($this->routes[$method][$path]) === false) {
-            $class = new $this->routes[$method][$path];
+            $className = $this->routes[$method][$path];
+            $class = new $className;
             $response = call_user_func_array(
                 [
                     $class,
