@@ -1,9 +1,5 @@
 # RSS Reader
 
-## Demo
-
-There is a live demo at http://reader.tristanbettany.com
-
 ## Installation
 
 - Make sure you have a mysql database created for this project, it can be called anything
